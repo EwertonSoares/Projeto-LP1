@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include<string.h>
-
+#include <unistd.h>
 void cadastrandoUsuario(){
  printf("************************* CADASTRAMENTO DE USUARIO *****************************");
 
@@ -27,11 +27,10 @@ void cadastrandoUsuario(){
   printf("Você foi cadastrado com sucesso!");
   //logado();
 
-  //system("pause");
 }
 
 
-//Escrevendo em arquivo
+//Escrevendo nome e senha do usuario
 void arquivoDeUsuario(char* userName, char* senha){
 
   char nomeDoUsuario[20];
@@ -110,34 +109,38 @@ printf("\n**********************************************************************
     char password[20];
     int num;
 
-    printf("\nVocê ja tem cadastro?");
+    printf("\n\nVocê ja tem cadastro?");
 
-    do{
-        printf("\nDigite 1 se tiver cadastro!");
-        printf("\nDigite 2 se nao tiver cadstro!");
-        printf("\nDigite: ");
+        printf("\n\nDigite 1 se tiver cadastro!");
+        printf("\n\nDigite 2 se nao tiver cadstro!");
+        printf("\n\nDigite 3 para fechar o programa!");
+        printf("\n\nDigite: ");
         scanf("%i", &num);
         system("clear");
 
-        if( num == 1 ){
+        switch(num){
+        case 1:
             printf("\nDigite seu login: ");
             scanf("%s", userLogin);
             printf("\nDigite a sua senha: ");
             scanf("%s", password);
             userValidation(userLogin, password);
-
+            break;
+        case 2:
+            cadastrandoUsuario();
+            break;
+        case 3:
+            exit(0);
+            //system("pause");
+            break;
+        default:
+            printf("\n\n\n\n\n************************** NUMERO DIGITADO INVALIDO! ***************************\n\n");
+            usleep(2000000);
+            system("clear");
+            //System("cls");
+            usleep(1000000);
+            main();
         }
-         else if( num == 2 ){
-         cadastrandoUsuario();
-        }
-        if(( num != 1) && (num != 2)){
-            printf("\nNumero digitado invalido!");
-
-        }
-    }
-    while(( num != 1) && (num != 2));
-
-
 
     return 0;
 }
