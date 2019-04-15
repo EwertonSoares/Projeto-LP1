@@ -51,7 +51,7 @@ printf("\nRegistrando ocorrencia: ");
 
 //Cadastrando usuario
 void cadastrandoUsuario(){
- printf("************************* CADASTRAMENTO DE USUARIO *****************************");
+ printf("************************** CADASTRAMENTO DE USUARIO *****************************");
 
  char texto[] = ".txt";
  char proj[] = "spcdj";
