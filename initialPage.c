@@ -3,8 +3,8 @@
 #include<string.h>
 #include <unistd.h>
 
+//Texto exibido na tela inicial
 void textoInicial(){
-
 printf("\n\n************ SISTEMA  DE PREVENÇÃO CONTRA DENGUE EM JAGUARIANA *****************");
 printf("\n********************************************************************************");
 printf("\n********************************************************************************");
