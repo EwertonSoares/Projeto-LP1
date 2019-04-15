@@ -1,87 +1,146 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include<string.h>
-void userValidation(char* userLogin, char* password)
-{
+#include <unistd.h>
+void cadastrandoUsuario(){
+ printf("************************* CADASTRAMENTO DE USUARIO *****************************");
+
+ char texto[] = ".txt";
+ char userName[20];
+ char senha[20];
+
+ printf("\nDigite seu nome: ");
+ scanf("%s", userName);
+
+ printf("\nDigite uma senha: ");
+ scanf("%s", senha);
+
+  FILE *creatingUser;
+
+  creatingUser = fopen(strcat(userName, texto), "a");
+
+  //Chamada de função
+  arquivoDeUsuario(userName, senha);
+
+  fclose(creatingUser);
+
+  printf("Você foi cadastrado com sucesso!");
+  //logado();
+
+}
+
+
+//Escrevendo nome e senha do usuario
+void arquivoDeUsuario(char* userName, char* senha){
+
+  char nomeDoUsuario[20];
+
+    FILE *write_arq;
+
+    write_arq = fopen(userName, "wb");
+
+  if(write_arq == NULL){
+  printf("\nAlgo de errado ocorreu refassa seu cadastro!");
+    //system(clear);
+    cadastrandoUsuario();
+  }
+
+  printf("\nConfirme seu nome: ");
+  scanf("%s", nomeDoUsuario);
+
+  //usando fprintf para armazenar a string no arquivo
+  fprintf(write_arq, "%s\r\n", nomeDoUsuario);
+  fprintf(write_arq, "%s", senha);
+
+  fclose(write_arq);
+
+}
+
+//Login de usuario
+void userValidation(char* userLogin, char* password){
+
+char texto[] = ".txt";
 
     FILE *usersFile;
-    usersFile = fopen("user.txt", "r");
+    usersFile = fopen(strcat(userLogin, texto), "r");
 
-    if( usersFile == NULL )
-    {
-        printf("Arquivo nao encontrado!");
+    if( usersFile == NULL ){
+        printf("\nAlgo errado ocorreu!");
         exit (0);
     }
+
+    userLogin[(strlen(userLogin) -4)] = '\0';
 
     char readUsersFile[20];
     char readPasswordFile[20];
 
 
     while(!feof(usersFile)){
-        fscanf (usersFile, "%20[^\n]", readUsersFile);
-        fscanf (usersFile, "%20[^\n]", readPasswordFile);
-
-        printf("\n\nNome digitado: %s %i", userLogin, strlen(userLogin));
-        printf("\nSenha digitada: %s %i", password, strlen(password));
-
-        printf("\n\nEsse é o usuario: %s %i", readUsersFile, strlen(readUsersFile));
-        printf("\nEssa é a senha: %s %i", readPasswordFile, strlen(readPasswordFile));
-
-
-           if((strcmp(readUsersFile, userLogin) == 0) && ((strcmp(readPasswordFile, password) == 0)))
-            {
-                printf("\nSâo iguais");
-            }
-            else {
-                printf("\nSâo diferentes");
-                printf("\n\n");
-            }
+        fgets(readUsersFile, 20,usersFile);
+        fgets(readPasswordFile, 20,usersFile);
     }
 
-printf("#########");
+    readUsersFile[(strlen(readUsersFile)-2)] = '\0';
+
+      if((strcmp(readUsersFile, userLogin) == 0) && ((strcmp(readPasswordFile, password) == 0))){
+                printf("\nLogado");
+                //initialUserPage();
+            }
+
+            else {
+                printf("\nUsuario ou senha invalidos!");
+                main();
+            }
 
     fclose(usersFile);
 }
 
 
-int main()
-{
+//Função principal
+int main(){
+
+printf("\n************ SISTEMA  DE PREVENÇÃO CONTRA DENGUE EM JAGUARIANA *****************");
+printf("\n********************************************************************************");
+printf("\n********************************************************************************");
+printf("\n********************************************************************************");
+printf("\n********************************************************************************");
+
     char userLogin[20];
     char password[20];
     int num;
 
-    printf("\nVocê é aluno ou administrador?");
+    printf("\n\nVocê ja tem cadastro?");
 
-    do
-    {
-        printf("\nDigite 1 se aluno!\n");
-        printf("\nDigite 2 se administrador!");
-        printf("\n:");
+        printf("\n\nDigite 1 se tiver cadastro!");
+        printf("\n\nDigite 2 se nao tiver cadstro!");
+        printf("\n\nDigite 3 para fechar o programa!");
+        printf("\n\nDigite: ");
         scanf("%i", &num);
         system("clear");
 
-        if( num == 1 )
-        {
-
-        }
-        else if( num == 2 )
-        {
-            printf("\nDigite login de usuario: ");
+        switch(num){
+        case 1:
+            printf("\nDigite seu login: ");
             scanf("%s", userLogin);
-            printf("\nDigite a password de usuario: ");
+            printf("\nDigite a sua senha: ");
             scanf("%s", password);
             userValidation(userLogin, password);
-
+            break;
+        case 2:
+            cadastrandoUsuario();
+            break;
+        case 3:
+            exit(0);
+            //system("pause");
+            break;
+        default:
+            printf("\n\n\n\n\n************************** NUMERO DIGITADO INVALIDO! ***************************\n\n");
+            usleep(2000000);
+            system("clear");
+            //System("cls");
+            usleep(1000000);
+            main();
         }
-        if(( num != 1) && (num != 2))
-        {
-            printf("\nNumero digitado invalido!");
-
-        }
-    }
-    while(( num != 1) && (num != 2));
-
-
 
     return 0;
 }
