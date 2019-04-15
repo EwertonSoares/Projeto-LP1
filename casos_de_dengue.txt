@@ -1,5 +1,0 @@
-Enviado por    Cidade         Bairro               CEP   
-
-ewerton        Jaguariuna     vida-nova           00000-000
-ewerton        Jaguariuna     mauro-marcondes     11111-999
-ewerton        Jaguariuna     vida-nova           00000-000s
