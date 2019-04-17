@@ -6,19 +6,23 @@
 //Texto exibido na tela inicial
 void textoInicial(){
 printf("\n\n************ SISTEMA  DE PREVENÇÃO CONTRA DENGUE EM JAGUARIANA *****************");
-printf("\n*********************************************************************************");
-printf("\n*********************************************************************************");
-printf("\n*********************************************************************************");
+printf("\n********************************************************************************");
+printf("\n********************************************************************************");
+printf("\n********************************************************************************");
 
 }
 
 //Registrando caso de dengue
 void registrandoOcorrencia(char* userLogin){
-printf("\nRegistrando ocorrencia: ");
 
-  char cidade[] = "Jaguariuna";
+  struct dados {
   char bairro[20];
   char cep[10];
+  char data[10];
+};
+
+struct dados cadastrar;
+
 
     FILE *casosDeDengue;
 
@@ -27,20 +31,24 @@ printf("\nRegistrando ocorrencia: ");
   if(casosDeDengue == NULL){
   printf("\nAlgo inesperado ocorreu refassa seu cadastro!");
        usleep(1000000);
-        userValidation();
+        //userValidation();
   }
 
   printf("\nInforme o CEP onde houve a ocorrencia: ");
-  scanf("%s", cep);
+  scanf("%s", cadastrar.cep);
 
   printf("\nInforme o bairro onde houve a ocorrencia: ");
-  scanf("%s", bairro);
+  scanf("%s", cadastrar.bairro);
+
+  printf("\nInforme data deste registro: ");
+  scanf("%s", cadastrar.data);
 
     fprintf(casosDeDengue,"%s      ", userLogin);
-    fprintf(casosDeDengue,"%s          ", cidade);
-    fprintf(casosDeDengue,"%s           ", bairro);
-    fprintf(casosDeDengue,"%s", cep);
-    fprintf(casosDeDengue, "\n");
+    fprintf(casosDeDengue,"Jaguariuna       ");
+    fprintf(casosDeDengue,"%s         ",cadastrar.bairro);
+    fprintf(casosDeDengue,"%s           ",cadastrar.cep);
+    fprintf(casosDeDengue,"%s           ",cadastrar.data);
+    fprintf(casosDeDengue, "\n\n");
 
   printf("\nOcorrencia reristrada com sucesso: ");
 
@@ -54,17 +62,27 @@ void cadastrandoUsuario(){
  printf("************************** CADASTRAMENTO DE USUARIO *****************************");
 
  char texto[] = ".txt";
- char proj[] = "spcdj";
+ int next;
+ int num;
+ char convertedNumber[40];
  char userName[20];
  char senha[20];
+
+
+srand(time (NULL));
+num = rand();
+
+//Convertendo numeros parra string
+sprintf(convertedNumber, "%d", num);
 
  printf("\nDigite seu nome: ");
  scanf("%s", userName);
 
- strcat(userName, proj);
-
- printf("\nDigite uma senha: ");
+ printf("\nCadastre uma senha: ");
  scanf("%s", senha);
+
+ //Concatenando nome com numero convertido para string
+ strcat(userName, convertedNumber);
 
   FILE *creatingUser;
 
@@ -73,26 +91,39 @@ void cadastrandoUsuario(){
   //Chamada de função
   escrevendo_login_e_Senha(userName, senha);
 
-  fclose(creatingUser);
+  printf("\nseu login e %s\n", userName);
 
-  userName[(strlen(userName) -4)] = '\0';
+  fclose(creatingUser);
 
   printf("Você foi cadastrado com sucesso!");
   printf("\nSeu login é: %s", userName);
-  printf("\nSua senha: ******");
+  printf("\nSua senha: ***********");
   printf("\n");
-  usleep(10000000);
+
+do{
+  printf("\nDeseja continuar ou voltar a tela inicial?");
+  printf("\nDigite 1 para continuar e 2 para voltar a tela inicial.");
+  printf("\nDigite: ");
+  scanf("%i", &next);
   system("clear");
-   main();
-  //logado();
+
+  if(next == 1){
+    userValidation(userName, senha);
+  }
+  else if(next == 2){
+  main();
+  }
+  else{
+  printf("\nDigito invalido!");
+  }
+}while((next != 1) && (next != 2));
+
 }
 
-
-//Escrevendo nome e senha do usuario
+//Escrevendo login e senha do usuario
 void escrevendo_login_e_Senha(char* userName, char* senha){
 
   char nomeDoUsuario[20];
-  char proj[] = "spcdj";
 
     FILE *write_arq;
 
@@ -106,12 +137,13 @@ void escrevendo_login_e_Senha(char* userName, char* senha){
     cadastrandoUsuario();
   }
 
-  printf("\nConfirme seu nome: ");
-  scanf("%s", nomeDoUsuario);
+  //usando fprintf para armazenar a string no
+  printf("\n\nAntes %s", userName);
+  userName[strlen(userName) -4] = '\0';
+  printf("\n\nDepois %s\n", userName);
 
-  strcat(nomeDoUsuario, proj);
-  //usando fprintf para armazenar a string no arquivo
-  fprintf(write_arq, "%s\r\n", nomeDoUsuario);
+  //printf("\n\n#### %s", userName);
+  fprintf(write_arq, "%s\r\n", userName);
   fprintf(write_arq, "%s", senha);
 
   fclose(write_arq);
@@ -145,6 +177,7 @@ int ocorrencia;
         fgets(readPasswordFile, 20,usersFile);
     }
 
+    //Removendo espaços criados pelo sistema
     readUsersFile[(strlen(readUsersFile)-2)] = '\0';
 
 
@@ -153,7 +186,7 @@ int ocorrencia;
                 printf("\n");
                 usleep(1000000);
                 system("clear");
-                userLogin[(strlen(userLogin) -5)] = '\0';
+                //userLogin[(strlen(userLogin) -5)] = '\0';
                 printf("%s esta logado", userLogin);
                 textoInicial();
 
@@ -186,7 +219,7 @@ int ocorrencia;
             }
 
             else {
-                printf("\n\n\n\n\n******** USUARIO OU SENHA INVALIDO! **************************\n\n");
+                printf("\n\n\n******************* USUARIO OU SENHA INVALIDO! **************************\n\n");
                 usleep(1000000);
                 system("clear");
                 usleep(1000000);
