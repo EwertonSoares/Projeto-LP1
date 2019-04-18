@@ -21,8 +21,8 @@ void registrandoOcorrencia(char* userLogin){
   char data[10];
 };
 
-struct dados cadastrar;
 
+struct dados cadastrar;
 
     FILE *casosDeDengue;
 
@@ -59,9 +59,10 @@ struct dados cadastrar;
 
 //Cadastrando usuario
 void cadastrandoUsuario(){
- printf("************************** CADASTRAMENTO DE USUARIO *****************************");
+ printf("*************************** CADASTRAMENTO DE USUARIO ***************************");
+ printf("********************************************************************************");
 
- char texto[] = ".txt";
+ char texto[] = "@projetolp1.com.txt";
  int next;
  int num;
  char convertedNumber[40];
@@ -70,16 +71,28 @@ void cadastrandoUsuario(){
 
 
 srand(time (NULL));
-num = rand();
+num = rand() % 100000;
 
 //Convertendo numeros parra string
 sprintf(convertedNumber, "%d", num);
 
- printf("\nDigite seu nome: ");
+ printf("\n\nDigite seu nome para ser cadastrado: ");
  scanf("%s", userName);
+
+do{
 
  printf("\nCadastre uma senha: ");
  scanf("%s", senha);
+
+ system("clear");
+
+ if(strlen(senha) < 6){
+ usleep(1000000);
+    printf("\nSenha muito curta");
+    printf("\nSua senha deve ter pelo menos seis caracteres\n");
+ }
+
+ }while(strlen(senha) < 6);
 
  //Concatenando nome com numero convertido para string
  strcat(userName, convertedNumber);
@@ -88,16 +101,24 @@ sprintf(convertedNumber, "%d", num);
 
   creatingUser = fopen(strcat(userName, texto), "a");
 
-  //Chamada de função
-  escrevendo_login_e_Senha(userName, senha);
+  //Verificando se email a ser cadastrado ja existe no arquivo
+  /*if(fopen(strcat(userName, texto))){
+  printf("\nEsse usuario ja esta sendo ultilizado!");
+  printf("\nEspere um momento e tente cadastrar um novo usurio");
+  usleep(1500000);
+  cadastrandoUsuario();
+  }
+  else {
+    creatingUser = fopen(strcat(userName, texto), "a");*/
 
-  printf("\nseu login e %s\n", userName);
+  //Chamada de função escrevendo_login_e_Senha()
+  escrevendo_login_e_Senha(userName, senha);
 
   fclose(creatingUser);
 
   printf("Você foi cadastrado com sucesso!");
-  printf("\nSeu login é: %s", userName);
-  printf("\nSua senha: ***********");
+  printf("\n\nSeu login é: %s", userName);
+  printf("\nSua senha: ***************");
   printf("\n");
 
 do{
@@ -118,6 +139,7 @@ do{
   }
 }while((next != 1) && (next != 2));
 
+//}
 }
 
 //Escrevendo login e senha do usuario
@@ -133,16 +155,14 @@ void escrevendo_login_e_Senha(char* userName, char* senha){
   printf("\nAlgo inesperado ocorreu refassa seu cadastro!");
        usleep(1000000);
        system("clear");
-    //system(clear);
-    cadastrandoUsuario();
+     cadastrandoUsuario();
   }
 
-  //usando fprintf para armazenar a string no
-  printf("\n\nAntes %s", userName);
+  //Removendo os ultimos 4 caracteries do arquivo (.txt)
   userName[strlen(userName) -4] = '\0';
-  printf("\n\nDepois %s\n", userName);
 
-  //printf("\n\n#### %s", userName);
+
+  //usando fprintf para armazenar login e senha no arquivo;
   fprintf(write_arq, "%s\r\n", userName);
   fprintf(write_arq, "%s", senha);
 
@@ -150,7 +170,7 @@ void escrevendo_login_e_Senha(char* userName, char* senha){
 
 }
 
-//Login de usuario
+//Validando login do usuario
 void userValidation(char* userLogin, char* password){
 
 char texto[] = ".txt";
@@ -166,27 +186,27 @@ int ocorrencia;
             main();
     }
 
+    //Retirando o ultimos caracteres do nome do arquivo(.txt)
     userLogin[(strlen(userLogin) -4)] = '\0';
 
-    char readUsersFile[20];
-    char readPasswordFile[20];
+    char readUsersFile[50];
+    char readPasswordFile[50];
 
 
     while(!feof(usersFile)){
-        fgets(readUsersFile, 20,usersFile);
-        fgets(readPasswordFile, 20,usersFile);
+        fgets(readUsersFile, 50,usersFile);
+        fgets(readPasswordFile, 50,usersFile);
     }
 
     //Removendo espaços criados pelo sistema
     readUsersFile[(strlen(readUsersFile)-2)] = '\0';
 
-
+        //Verificando se login e senha digitado são os mesmos que estão registrados
       if((strcmp(readUsersFile, userLogin) == 0) && ((strcmp(readPasswordFile, password) == 0))){
                 printf("\nSeu login foi efetuado com sucesso");
                 printf("\n");
                 usleep(1000000);
                 system("clear");
-                //userLogin[(strlen(userLogin) -5)] = '\0';
                 printf("%s esta logado", userLogin);
                 textoInicial();
 
@@ -204,7 +224,7 @@ int ocorrencia;
                 registrandoOcorrencia(userLogin);
                 }
                 else if(ocorrencia == 2){
-                printf("\nChamará função que exibira casos registrados");
+                printf("\nCHAMARA UMA FUNÇÃO QUE EXIBIRA CASOS REGISTRADOS");
                 //vizualizarOcorrenciarCadastradas();
                 }
                 else if(ocorrencia == 3){
@@ -219,7 +239,7 @@ int ocorrencia;
             }
 
             else {
-                printf("\n\n\n******************* USUARIO OU SENHA INVALIDO! **************************\n\n");
+                printf("\n\n\n************************ USUARIO OU SENHA INVALIDO! **************************\n\n");
                 usleep(1000000);
                 system("clear");
                 usleep(1000000);
@@ -265,10 +285,9 @@ int main(){
             //system("pause");
             break;
         default:
-            printf("\n\n\n\n\n************************** NUMERO DIGITADO INVALIDO! ***************************\n\n");
+            printf("\n\n\n************************** NUMERO DIGITADO INVALIDO! ***************************\n\n");
             usleep(1000000);
             system("clear");
-            //System("cls");
             usleep(1000000);
             main();
         }
