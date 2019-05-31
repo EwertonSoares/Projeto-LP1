@@ -1,6 +1,11 @@
-SP	Campinas	Vida-nova	12345-000	1	9/05/2019
-SP	Campinas	Vila-Vitoria	13056-773	3	9/05/2019
-SP	Campinas	São-Jose	12323-777	3	9/05/2019
-SP	Santos	Capão-Redondo	12342-987	2	9/05/2019
-SP	Campinas	Parque-Industrial	11123-666	1	9/05/2019
-SP	Jaguariúna	Roseira	13820000	1	9/05/2019
+SP	Campinas	Vila-Vitoria	13056-773	2	15/05/2019
+SP	Campinas	Vida-Nova	130-76-994	1	15/05/2019
+SP	Campinas	Sao-Pedro	11121-888	1	16/05/2019
+SP	Campinas	Teste		12326-987	1	16/05/2019
+AL	Maceio		Satuba		12123-000	1	16/05/2019
+AL	Maceiosese	Satura		12121-112	1	16/05/2019
+ÇP	Teste123	Testando	12321-909	1	16/05/2019
+te	teste4000	teste1000	1111-000	1	19/05/2019
+SP	Campinas	Testsese	55550-998	1	19/05/2019
+uy	teste4555	testte	4532222-998	1	21/05/2019
+BR	Testando12345	Tete31223	000011-92	1	21/05/2019

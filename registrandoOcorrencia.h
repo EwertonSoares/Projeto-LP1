@@ -1,33 +1,9 @@
-#include<stdio.h>
-#include <stdlib.h>
-#include<string.h>
-#include<time.h>
-#include <unistd.h>
+#include "estrutura.h"
+#include "exibindoCasos.h"
 
-//#define NOME_LEN 50
-#define ESTADO_LEN 50
-#define CIDADE_LEN 50
-#define BAIRRO_LEN 50
-#define CEP_LEN 20
-#define DATA_LEN 20
-
-
-struct dados
+//Registrando caso de dengue
+void registrandoOcorrencia(char* userLogin)
 {
-    //char nome[NOME_LEN];
-    char estado[ESTADO_LEN];
-    char cidade[CIDADE_LEN];
-    char bairro[BAIRRO_LEN];
-    char cep[CEP_LEN];
-    int contador;
-    char data[DATA_LEN];
-    //int contador;
-};
-
-
-
-void main(){
-
     printf("\n\n*********************** REGISTRANDO OCORRENCIA *******************************");
     printf("\n********************************************************************************");
     printf("\n********************************************************************************");
@@ -56,7 +32,7 @@ void main(){
 
     FILE *casosDeDengue;
 
-    casosDeDengue = fopen("casos_de_dengue.txt", "a");
+    casosDeDengue = fopen("casos_de_dengue.txt", "r");
 
     if(casosDeDengue == NULL)
     {
@@ -70,65 +46,66 @@ void main(){
 
     printf("\nInforme a cidade onde houve a ocorrencia: ");
     scanf("%s", cadastrar.cidade);
+    setbuf(stdin,NULL);
 
     printf("\nInforme o estado onde houve a ocorrencia: ");
     scanf("%s", cadastrar.estado);
+    setbuf(stdin,NULL);
 
     printf("\nInforme o bairro onde houve a ocorrencia: ");
     scanf("%s", cadastrar.bairro);
+    setbuf(stdin,NULL);
 
     printf("\nInforme o CEP onde houve a ocorrencia: ");
     scanf("%s", cadastrar.cep);
+    setbuf(stdin,NULL);
+
+    linhas = contandoLinhasDoArquivo();
+    struct dados casos[linhas];
 
 
-   // linhas = contandoLinhasDoArquivo();
-    struct dados casos[5];
-
-    while(fscanf(casosDeDengue,"%s %s %s %s %i %s", estado, cidade, bairro, cep, &cont, data) != EOF)
+    while(fscanf(casosDeDengue,"%s %s %s %s %d  %s", estado, cidade, bairro, cep, &cont, data) != EOF)
     {
-
         strcpy(casos[j].estado, estado);
         strcpy(casos[j].cidade, cidade);
         strcpy(casos[j].bairro, bairro);
-        strcpy(casos[j].cep, cep);
-        strcpy(casos[j].contador, cont);
+        strcpy(casos[j].cep,    cep);
+        casos[j].contador = cont;
         strcpy(casos[j].data, data);
+
         j++;
-
-        printf("\nDentro do while: %s",  casos[j].cep);
-
     }
 
+    fclose(casosDeDengue);
 
-    for(i = 1; i <= 5; i++)
+    for(i = 1; i <= linhas; i++)
     {
-
-         printf("\n%s,     %s", cadastrar.cep, casos[i].cep);
-         printf("\n#####");
         if(strcmp(cadastrar.cep, casos[i].cep) != 0)
         {
 
-            if(i == 5)
+            if(i == linhas)
             {
-                fprintf(casosDeDengue,"%s    ",cadastrar.estado);
-                fprintf(casosDeDengue,"%s    ",cadastrar.cidade);
-                fprintf(casosDeDengue,"%s    ",cadastrar.bairro);
-                fprintf(casosDeDengue,"%s    ",cadastrar.cep);
+                FILE *anexandoOcorrencia;
+
+                anexandoOcorrencia = fopen("casos_de_dengue.txt", "a");
+
+                fprintf(anexandoOcorrencia,"%s\t",cadastrar.estado);
+                fprintf(anexandoOcorrencia,"%s\t",cadastrar.cidade);
+                fprintf(anexandoOcorrencia,"%s\t",cadastrar.bairro);
+                fprintf(anexandoOcorrencia,"%s\t",cadastrar.cep);
 
                 cadastrar.contador = cadastrar.contador + 1;
 
-                fprintf(casosDeDengue,"%d    ", cadastrar.contador);
-                fprintf(casosDeDengue,"%d/0%d/%d",ptr->tm_mday,(ptr->tm_mon+1),(ptr->tm_year+1900));
-                fprintf(casosDeDengue,"\n");
+                fprintf(anexandoOcorrencia,"%d\t", cadastrar.contador);
+                fprintf(anexandoOcorrencia,"%d/0%d/%d",ptr->tm_mday,(ptr->tm_mon+1),(ptr->tm_year+1900));
+                fprintf(anexandoOcorrencia,"\n");
 
-                fclose(casosDeDengue);
+                fclose(anexandoOcorrencia);
             }
 
         }
         else
         {
-            fclose(casosDeDengue);
-
             casos[i].contador++;
 
             FILE *rewriteFile;
@@ -137,11 +114,11 @@ void main(){
 
             for(c = 0; c < linhas; c++)
             {
-                fprintf(rewriteFile,"%s\t\t",casos[c].estado);
-                fprintf(rewriteFile,"%s\t\t",casos[c].cidade);
-                fprintf(rewriteFile,"%s\t\t",casos[c].bairro);
-                fprintf(rewriteFile,"%s\t\t",casos[c].cep);
-                fprintf(rewriteFile,"%d\t\t", casos[c].contador);
+                fprintf(rewriteFile,"%s\t",casos[c].estado);
+                fprintf(rewriteFile,"%s\t",casos[c].cidade);
+                fprintf(rewriteFile,"%s\t",casos[c].bairro);
+                fprintf(rewriteFile,"%s\t",casos[c].cep);
+                fprintf(rewriteFile,"%d\t", casos[c].contador);
                 fprintf(rewriteFile,"%d/0%d/%d",ptr->tm_mday,(ptr->tm_mon+1),(ptr->tm_year+1900));
                 fprintf(rewriteFile,"\n");
             }
@@ -150,15 +127,12 @@ void main(){
 
             //Saindo do primeiro for
             break;
-
-
         }
-
     }
 
-    /*printf("\n\nOCORRENCIA REGISTRADA COM SUCESSO: ");
+    printf("\n\nOCORRENCIA REGISTRADA COM SUCESSO: ");
     usleep(1500000);
-    system("clear");*/
+    system("clear");
 
     do
     {
@@ -175,7 +149,7 @@ void main(){
         {
         case 1:
             system("clear");
-//            registrandoOcorrencia(userLogin);
+            registrandoOcorrencia(userLogin);
             break;
         case 2:
             system("clear");
@@ -183,7 +157,8 @@ void main(){
             break;
         case 3:
             system("clear");
-            //exibindoCasosDeDengue();
+            setbuf(stdin, NULL);
+            exibindoCasosDeDengue();
             break;
         case 4:
             exit(1);
@@ -193,6 +168,4 @@ void main(){
         }
     }
     while((resp != 1) && (resp != 2) && (resp != 3) && (resp != 4));
-
 }
-
